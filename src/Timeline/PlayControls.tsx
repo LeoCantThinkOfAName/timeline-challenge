@@ -1,19 +1,23 @@
-import React, { useCallback } from "react";
+import { NumberInput } from "../components/NumberInput";
 
 type PlayControlsProps = {
   time: number;
   setTime: (time: number) => void;
 };
 
-export const PlayControls = ({ time, setTime }: PlayControlsProps) => {
+export const PlayControls = ({ setTime }: PlayControlsProps) => {
   // TODO: implement time <= maxTime
 
-  const onTimeChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setTime(Number(e.target.value));
-    },
-    [setTime],
-  );
+  // const onTimeChange = useCallback(
+  //   (e: React.ChangeEvent<HTMLInputElement>) => {
+  //     setTime(Number(e.target.value));
+  //   },
+  //   [setTime],
+  // );
+
+  // const onInputFocus = useCallback((e: React.FocusEvent<HTMLInputElement>) => {
+  //   e.target.select();
+  // }, []);
 
   return (
     <div
@@ -23,7 +27,7 @@ export const PlayControls = ({ time, setTime }: PlayControlsProps) => {
     >
       <fieldset className="flex gap-1">
         Current
-        <input
+        {/* <input
           className="bg-gray-700 px-1 rounded"
           type="number"
           data-testid="time"
@@ -31,12 +35,12 @@ export const PlayControls = ({ time, setTime }: PlayControlsProps) => {
           max={2000}
           step={10}
           value={time}
-          onChange={onTimeChange}
-        />
+        /> */}
+        <NumberInput setTime={setTime} defaultValue={0} data-testid="time" />
       </fieldset>
       -
       <fieldset className="flex gap-1">
-        <input
+        {/* <input
           className="bg-gray-700 px-1 rounded"
           type="number"
           data-testid="max-time"
@@ -44,6 +48,11 @@ export const PlayControls = ({ time, setTime }: PlayControlsProps) => {
           max={2000}
           step={10}
           defaultValue={2000}
+        /> */}
+        <NumberInput
+          setTime={() => {}}
+          defaultValue={2000}
+          data-testid="max-time"
         />
         Duration
       </fieldset>

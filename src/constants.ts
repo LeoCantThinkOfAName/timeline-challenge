@@ -1,5 +1,6 @@
 export const TIMELINE_STEP = 10;
 export const TIMELINE_MAX_DURATION = 6000;
+export const TIMELINE_MIN_DURATION = 100;
 
 export const KEYCODE_MAP = {
   Escape: "Escape",

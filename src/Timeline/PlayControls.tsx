@@ -1,3 +1,6 @@
+import { TIMELINE_MAX_DURATION, TIMELINE_MIN_DURATION } from "../constants";
+import { useCallback, useState } from "react";
+
 import { NumberInput } from "../components/NumberInput";
 
 type PlayControlsProps = {
@@ -5,19 +8,12 @@ type PlayControlsProps = {
   setTime: (time: number) => void;
 };
 
-export const PlayControls = ({ setTime }: PlayControlsProps) => {
-  // TODO: implement time <= maxTime
+export const PlayControls = ({ setTime, time }: PlayControlsProps) => {
+  const [duration, setDuration] = useState(TIMELINE_MAX_DURATION);
 
-  // const onTimeChange = useCallback(
-  //   (e: React.ChangeEvent<HTMLInputElement>) => {
-  //     setTime(Number(e.target.value));
-  //   },
-  //   [setTime],
-  // );
-
-  // const onInputFocus = useCallback((e: React.FocusEvent<HTMLInputElement>) => {
-  //   e.target.select();
-  // }, []);
+  const onDurationChange = useCallback((value: number) => {
+    setDuration(value);
+  }, []);
 
   return (
     <div
@@ -36,7 +32,12 @@ export const PlayControls = ({ setTime }: PlayControlsProps) => {
           step={10}
           value={time}
         /> */}
-        <NumberInput setTime={setTime} defaultValue={0} data-testid="time" />
+        <NumberInput
+          onInputChange={setTime}
+          defaultValue={time}
+          data-testid="time"
+          max={duration}
+        />
       </fieldset>
       -
       <fieldset className="flex gap-1">
@@ -50,8 +51,10 @@ export const PlayControls = ({ setTime }: PlayControlsProps) => {
           defaultValue={2000}
         /> */}
         <NumberInput
-          setTime={() => {}}
-          defaultValue={2000}
+          onInputChange={onDurationChange}
+          min={TIMELINE_MIN_DURATION}
+          max={TIMELINE_MAX_DURATION}
+          defaultValue={duration}
           data-testid="max-time"
         />
         Duration

@@ -19,11 +19,14 @@ export const useSyncScroll = (
   const scrollListener = useCallback((e: Event) => {
     const currElm = e.target as HTMLElement;
     const targetRefs = refs.filter((ref) => ref.current !== currElm);
-    targetRefs.forEach((ref) => {
-      if (dir === "X")
+    if (dir === "X") {
+      targetRefs.forEach((ref) => {
         ref.current?.scroll(currElm.scrollLeft, ref.current.scrollTop);
-      if (dir === "Y")
+      });
+    } else {
+      targetRefs.forEach((ref) => {
         ref.current?.scroll(ref.current.scrollLeft, currElm.scrollTop);
-    });
+      });
+    }
   }, []);
 };

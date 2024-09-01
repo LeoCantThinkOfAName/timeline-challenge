@@ -8,3 +8,16 @@ export const KEYCODE_MAP = {
   ArrowUp: "ArrowUp",
   ArrowDown: "ArrowDown",
 };
+
+export const DEFAULT_TRACKS = [
+  "Track A",
+  "Track B",
+  "Track C",
+  "Track D",
+  "Track E",
+  "Track F",
+  "Track G",
+  "Track H",
+  "Track I",
+  "Track J",
+];

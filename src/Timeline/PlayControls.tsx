@@ -1,16 +1,21 @@
 import { TIMELINE_MAX_DURATION, TIMELINE_MIN_DURATION } from "../constants";
-import { useCallback, useState } from "react";
 
 import { NumberInput } from "../components/NumberInput";
+import { useCallback } from "react";
 
 type PlayControlsProps = {
   time: number;
+  duration: number;
   setTime: (time: number) => void;
+  setDuration: (time: number) => void;
 };
 
-export const PlayControls = ({ setTime, time }: PlayControlsProps) => {
-  const [duration, setDuration] = useState(TIMELINE_MAX_DURATION);
-
+export const PlayControls = ({
+  setTime,
+  time,
+  duration,
+  setDuration,
+}: PlayControlsProps) => {
   const onDurationChange = useCallback((value: number) => {
     setDuration(value);
   }, []);

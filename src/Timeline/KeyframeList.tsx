@@ -1,19 +1,30 @@
-import { Segment } from "./Segment";
-export const KeyframeList = () => {
-  // TODO: implement scroll sync with `Ruler` and `TrackList`
+import { DEFAULT_TRACKS, TIMELINE_MAX_DURATION } from "../constants";
 
-  return (
-    <div className="px-4 min-w-0 overflow-auto" data-testid="keyframe-list">
-      <Segment />
-      <Segment />
-      <Segment />
-      <Segment />
-      <Segment />
-      <Segment />
-      <Segment />
-      <Segment />
-      <Segment />
-      <Segment />
-    </div>
-  );
+import { Segment } from "./Segment";
+import { forwardRef } from "react";
+
+type KeyframeListProps = {
+  duration?: number;
 };
+
+export const KeyframeList = forwardRef<HTMLDivElement, KeyframeListProps>(
+  ({ duration }, ref) => {
+    // TODO: implement scroll sync with `Ruler` and `TrackList`
+
+    return (
+      <div
+        ref={ref}
+        className="px-4 min-w-0 overflow-auto"
+        data-testid="keyframe-list"
+      >
+        {DEFAULT_TRACKS.map((trackTitle) => (
+          <Segment duration={duration} key={trackTitle} />
+        ))}
+      </div>
+    );
+  },
+);
+
+KeyframeList.defaultProps = {
+  duration: TIMELINE_MAX_DURATION,
+} as KeyframeListProps;

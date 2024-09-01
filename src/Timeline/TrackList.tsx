@@ -1,3 +1,5 @@
+import { DEFAULT_TRACKS } from "../constants";
+
 export const TrackList = () => {
   // TODO: implement scroll sync with `KeyframeList`
 
@@ -8,36 +10,11 @@ export const TrackList = () => {
       overflow-auto"
       data-testid="track-list"
     >
-      <div className="p-2">
-        <div>Track A</div>
-      </div>
-      <div className="p-2">
-        <div>Track B</div>
-      </div>
-      <div className="p-2">
-        <div>Track C</div>
-      </div>
-      <div className="p-2">
-        <div>Track D</div>
-      </div>
-      <div className="p-2">
-        <div>Track E</div>
-      </div>
-      <div className="p-2">
-        <div>Track F </div>
-      </div>
-      <div className="p-2">
-        <div>Track G</div>
-      </div>
-      <div className="p-2">
-        <div>Track H</div>
-      </div>
-      <div className="p-2">
-        <div>Track I </div>
-      </div>
-      <div className="p-2">
-        <div>Track J</div>
-      </div>
+      {DEFAULT_TRACKS.map((trackTitle) => (
+        <div className="p-2" key={trackTitle}>
+          <div>{trackTitle}</div>
+        </div>
+      ))}
     </div>
   );
 };

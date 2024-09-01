@@ -14,6 +14,8 @@ import {
   TIMELINE_STEP,
 } from "../constants";
 
+import { getRoundedTime } from "../utils";
+
 interface NumberInputProps extends InputHTMLAttributes<HTMLInputElement> {
   defaultValue: number;
   onInputChange: (value: number) => void;
@@ -23,10 +25,11 @@ export const NumberInput: FC<NumberInputProps> = ({
   onInputChange,
   min,
   max,
+  defaultValue,
   ...props
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const storedValue = useRef<number>(props.defaultValue);
+  const storedValue = useRef<number>(defaultValue);
 
   const storeAndSet = useCallback(
     (value: number) => {
@@ -82,7 +85,7 @@ export const NumberInput: FC<NumberInputProps> = ({
         finalVal = Number(max);
       } else {
         // rounded the value to the times of the given step config
-        finalVal = Math.round(num / TIMELINE_STEP) * TIMELINE_STEP;
+        finalVal = getRoundedTime(num);
       }
       storeAndSet(finalVal);
     },
@@ -107,6 +110,10 @@ export const NumberInput: FC<NumberInputProps> = ({
       storeAndSet(minV);
     }
   }, [max, min]);
+
+  useEffect(() => {
+    storeAndSet(defaultValue);
+  }, [defaultValue]);
 
   return (
     <input

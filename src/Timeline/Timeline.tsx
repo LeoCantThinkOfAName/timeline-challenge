@@ -14,7 +14,9 @@ export const Timeline = () => {
   const [duration, setDuration] = useState(TIMELINE_MAX_DURATION);
   const rulerRef = useRef<HTMLDivElement>(null);
   const keyframeRef = useRef<HTMLDivElement>(null);
+  const trackListRef = useRef<HTMLDivElement>(null);
   useSyncScroll([rulerRef, keyframeRef], "X");
+  useSyncScroll([keyframeRef, trackListRef], "Y");
 
   return (
     <div
@@ -29,7 +31,7 @@ export const Timeline = () => {
         setDuration={setDuration}
       />
       <Ruler ref={rulerRef} duration={duration} setTime={setTime} time={time} />
-      <TrackList />
+      <TrackList ref={trackListRef} />
       <KeyframeList ref={keyframeRef} duration={duration} />
       <Playhead time={time} />
     </div>

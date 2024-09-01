@@ -1,20 +1,26 @@
 import { DEFAULT_TRACKS } from "../constants";
+import { forwardRef } from "react";
 
-export const TrackList = () => {
-  // TODO: implement scroll sync with `KeyframeList`
+type TrackListProps = {};
 
-  return (
-    <div
-      className="grid grid-flow-row auto-rows-[40px]
+export const TrackList = forwardRef<HTMLDivElement, TrackListProps>(
+  (_props, ref) => {
+    // TODO: implement scroll sync with `KeyframeList`
+
+    return (
+      <div
+        ref={ref}
+        className="grid grid-flow-row auto-rows-[40px]
       border-r border-solid border-r-gray-700 
       overflow-auto"
-      data-testid="track-list"
-    >
-      {DEFAULT_TRACKS.map((trackTitle) => (
-        <div className="p-2" key={trackTitle}>
-          <div>{trackTitle}</div>
-        </div>
-      ))}
-    </div>
-  );
-};
+        data-testid="track-list"
+      >
+        {DEFAULT_TRACKS.map((trackTitle) => (
+          <div className="p-2" key={trackTitle}>
+            <div>{trackTitle}</div>
+          </div>
+        ))}
+      </div>
+    );
+  },
+);

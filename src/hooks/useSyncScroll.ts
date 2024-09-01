@@ -20,8 +20,10 @@ export const useSyncScroll = (
     const currElm = e.target as HTMLElement;
     const targetRefs = refs.filter((ref) => ref.current !== currElm);
     targetRefs.forEach((ref) => {
-      if (dir === "X") ref.current?.scroll(currElm.scrollLeft, 0);
-      if (dir === "Y") ref.current?.scroll(0, currElm.scrollTop);
+      if (dir === "X")
+        ref.current?.scroll(currElm.scrollLeft, ref.current.scrollTop);
+      if (dir === "Y")
+        ref.current?.scroll(ref.current.scrollLeft, currElm.scrollTop);
     });
   }, []);
 };

@@ -1,17 +1,18 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 import { KeyframeList } from "./KeyframeList";
 import { PlayControls } from "./PlayControls";
 import { Playhead } from "./Playhead";
 import { Ruler } from "./Ruler";
-import { TIMELINE_MAX_DURATION } from "../constants";
 import { TrackList } from "./TrackList";
 import { useSyncScroll } from "../hooks/useSyncScroll";
+import { useTimelineStore } from "./Store";
 
 export const Timeline = () => {
-  const [offset, setOffset] = useState(0);
-  const [time, setTime] = useState(0);
-  const [duration, setDuration] = useState(TIMELINE_MAX_DURATION);
+  // const [offset, setOffset] = useState(0);
+  // const [time, setTime] = useState(0);
+  // const [duration, setDuration] = useState(TIMELINE_MAX_DURATION);
+  const setOffset = useTimelineStore.use.setOffset();
   const rulerRef = useRef<HTMLDivElement>(null);
   const keyframeRef = useRef<HTMLDivElement>(null);
   const trackListRef = useRef<HTMLDivElement>(null);
@@ -31,16 +32,11 @@ export const Timeline = () => {
     bg-gray-800 border-t-2 border-solid border-gray-700 overflow-hidden"
       data-testid="timeline"
     >
-      <PlayControls
-        time={time}
-        setTime={setTime}
-        duration={duration}
-        setDuration={setDuration}
-      />
-      <Ruler ref={rulerRef} duration={duration} setTime={setTime} time={time} />
+      <PlayControls />
+      <Ruler ref={rulerRef} />
       <TrackList ref={trackListRef} />
-      <KeyframeList ref={keyframeRef} duration={duration} />
-      <Playhead time={time} offset={offset} />
+      <KeyframeList ref={keyframeRef} />
+      <Playhead />
     </div>
   );
 };

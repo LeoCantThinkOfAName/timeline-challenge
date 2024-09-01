@@ -1,14 +1,11 @@
-import { DEFAULT_TRACKS, TIMELINE_MAX_DURATION } from "../constants";
-
+import { DEFAULT_TRACKS } from "../constants";
 import { Segment } from "./Segment";
 import { forwardRef } from "react";
 
-type KeyframeListProps = {
-  duration?: number;
-};
+type KeyframeListProps = {};
 
 export const KeyframeList = forwardRef<HTMLDivElement, KeyframeListProps>(
-  ({ duration }, ref) => {
+  (_props, ref) => {
     return (
       <div
         ref={ref}
@@ -16,13 +13,11 @@ export const KeyframeList = forwardRef<HTMLDivElement, KeyframeListProps>(
         data-testid="keyframe-list"
       >
         {DEFAULT_TRACKS.map((trackTitle) => (
-          <Segment duration={duration} key={trackTitle} />
+          <Segment key={trackTitle} />
         ))}
       </div>
     );
   },
 );
 
-KeyframeList.defaultProps = {
-  duration: TIMELINE_MAX_DURATION,
-} as KeyframeListProps;
+KeyframeList.defaultProps = {} as KeyframeListProps;

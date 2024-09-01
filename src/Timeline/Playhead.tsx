@@ -1,9 +1,10 @@
-type PlayheadProps = {
-  time: number;
-  offset: number;
-};
+import { useTimelineStore } from "./Store";
 
-export const Playhead = ({ time, offset }: PlayheadProps) => {
+type PlayheadProps = {};
+
+export const Playhead = (_props: PlayheadProps) => {
+  const offset = useTimelineStore.use.offset();
+  const time = useTimelineStore.use.time();
   return (
     <div
       hidden={offset > time}

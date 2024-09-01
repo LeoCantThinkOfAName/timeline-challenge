@@ -12,17 +12,15 @@ import {
   KEYCODE_MAP,
   TIMELINE_MAX_DURATION,
   TIMELINE_STEP,
-} from "../constants";
+} from "../../constants";
 
-import { getRoundedTime } from "../utils";
+import { getRoundedTime } from "../../utils";
 
 interface NumberInputProps extends InputHTMLAttributes<HTMLInputElement> {
   defaultValue: number;
-  onInputChange: (value: number) => void;
 }
 
 export const NumberInput: FC<NumberInputProps> = ({
-  onInputChange,
   min,
   max,
   defaultValue,
@@ -31,37 +29,31 @@ export const NumberInput: FC<NumberInputProps> = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const storedValue = useRef<number>(defaultValue);
 
-  const storeAndSet = useCallback(
-    (value: number) => {
-      onInputChange(value);
-      storedValue.current = value;
-      if (inputRef.current) inputRef.current.value = String(value);
-    },
-    [onInputChange],
-  );
+  const storeAndSet = useCallback((value: number) => {
+    // onInputChange(value);
+    storedValue.current = value;
+    if (inputRef.current) inputRef.current.value = String(value);
+  }, []);
 
-  const onKeyUp = useCallback(
-    (e: KeyboardEvent<HTMLInputElement>) => {
-      switch (e.code) {
-        case KEYCODE_MAP.Enter:
-          // when press ENTER, lose focus
-          e.currentTarget.blur();
-          break;
-        case KEYCODE_MAP.Escape:
-          // when press ESC, restore the input to the last valid value and lose focus
-          e.currentTarget.value = String(storedValue.current);
-          e.currentTarget.blur();
-          break;
-        case KEYCODE_MAP.ArrowUp:
-        case KEYCODE_MAP.ArrowDown:
-          // select the entire value when user press arrow up/arrow down
-          e.currentTarget.select();
-          storeAndSet(Number(e.currentTarget.value));
-          break;
-      }
-    },
-    [onInputChange],
-  );
+  const onKeyUp = useCallback((e: KeyboardEvent<HTMLInputElement>) => {
+    switch (e.code) {
+      case KEYCODE_MAP.Enter:
+        // when press ENTER, lose focus
+        e.currentTarget.blur();
+        break;
+      case KEYCODE_MAP.Escape:
+        // when press ESC, restore the input to the last valid value and lose focus
+        e.currentTarget.value = String(storedValue.current);
+        e.currentTarget.blur();
+        break;
+      case KEYCODE_MAP.ArrowUp:
+      case KEYCODE_MAP.ArrowDown:
+        // select the entire value when user press arrow up/arrow down
+        e.currentTarget.select();
+        storeAndSet(Number(e.currentTarget.value));
+        break;
+    }
+  }, []);
 
   const onBlur = useCallback(
     (e: FocusEvent<HTMLInputElement>) => {
@@ -89,7 +81,7 @@ export const NumberInput: FC<NumberInputProps> = ({
       }
       storeAndSet(finalVal);
     },
-    [onInputChange, max, min],
+    [max, min],
   );
 
   const onFocus = useCallback((e: FocusEvent<HTMLInputElement>) => {
@@ -110,10 +102,6 @@ export const NumberInput: FC<NumberInputProps> = ({
       storeAndSet(minV);
     }
   }, [max, min]);
-
-  useEffect(() => {
-    storeAndSet(defaultValue);
-  }, [defaultValue]);
 
   return (
     <input

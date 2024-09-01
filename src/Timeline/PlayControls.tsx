@@ -1,25 +1,14 @@
 import { TIMELINE_MAX_DURATION, TIMELINE_MIN_DURATION } from "../constants";
 
-import { NumberInput } from "../components/NumberInput";
-import { useCallback } from "react";
+import { NumberInput } from "./components/NumberInput";
+import { useTimelineStore } from "./Store";
 
-type PlayControlsProps = {
-  time: number;
-  duration: number;
-  setTime: (time: number) => void;
-  setDuration: (time: number) => void;
-};
+type PlayControlsProps = {};
 
-export const PlayControls = ({
-  setTime,
-  time,
-  duration,
-  setDuration,
-}: PlayControlsProps) => {
-  const onDurationChange = useCallback((value: number) => {
-    setDuration(value);
-  }, []);
-
+export const PlayControls = (_props: PlayControlsProps) => {
+  // TODO: move these state into input component to further reduce rerender times
+  const time = useTimelineStore.use.time();
+  const duration = useTimelineStore.use.duration();
   return (
     <div
       className="flex items-center justify-between border-b border-r border-solid border-gray-700 
@@ -28,21 +17,16 @@ export const PlayControls = ({
     >
       <fieldset className="flex gap-1">
         Current
-        <NumberInput
-          onInputChange={setTime}
-          defaultValue={time}
-          data-testid="time"
-          max={duration}
-        />
+        <NumberInput data-testid="time" defaultValue={0} value={time} />
       </fieldset>
       -
       <fieldset className="flex gap-1">
         <NumberInput
-          onInputChange={onDurationChange}
           min={TIMELINE_MIN_DURATION}
           max={TIMELINE_MAX_DURATION}
-          defaultValue={duration}
+          defaultValue={TIMELINE_MAX_DURATION}
           data-testid="max-time"
+          value={duration}
         />
         Duration
       </fieldset>

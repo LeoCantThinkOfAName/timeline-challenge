@@ -1,10 +1,11 @@
 import { TIMELINE_MAX_DURATION } from "../constants";
+import { useTimelineStore } from "./Store";
 
-type SegmentProps = {
-  duration?: number;
-};
+type SegmentProps = {};
 
-export const Segment = ({ duration }: SegmentProps) => {
+export const Segment = (_props: SegmentProps) => {
+  const duration = useTimelineStore.use.duration();
+
   return (
     <div
       className="py-2"

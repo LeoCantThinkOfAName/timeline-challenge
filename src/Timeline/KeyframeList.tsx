@@ -9,8 +9,6 @@ type KeyframeListProps = {
 
 export const KeyframeList = forwardRef<HTMLDivElement, KeyframeListProps>(
   ({ duration }, ref) => {
-    // TODO: implement scroll sync with `Ruler` and `TrackList`
-
     return (
       <div
         ref={ref}

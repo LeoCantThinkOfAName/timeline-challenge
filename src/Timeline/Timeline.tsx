@@ -9,7 +9,6 @@ import { TrackList } from "./TrackList";
 import { useSyncScroll } from "../hooks/useSyncScroll";
 
 export const Timeline = () => {
-  // FIXME: performance concerned
   const [offset, setOffset] = useState(0);
   const [time, setTime] = useState(0);
   const [duration, setDuration] = useState(TIMELINE_MAX_DURATION);

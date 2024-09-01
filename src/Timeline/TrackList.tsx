@@ -5,8 +5,6 @@ type TrackListProps = {};
 
 export const TrackList = forwardRef<HTMLDivElement, TrackListProps>(
   (_props, ref) => {
-    // TODO: implement scroll sync with `KeyframeList`
-
     return (
       <div
         ref={ref}

@@ -9,7 +9,6 @@ type RulerProps = {
 
 export const Ruler = forwardRef<HTMLDivElement, RulerProps>(
   ({ duration, setTime, time }, ref) => {
-    // TODO: implement mousedown and mousemove to update time and Playhead position
     const sharedStyle = useMemo(
       () => ({
         style: {

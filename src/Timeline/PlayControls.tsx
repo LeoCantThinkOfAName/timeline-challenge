@@ -28,15 +28,6 @@ export const PlayControls = ({
     >
       <fieldset className="flex gap-1">
         Current
-        {/* <input
-          className="bg-gray-700 px-1 rounded"
-          type="number"
-          data-testid="time"
-          min={0}
-          max={2000}
-          step={10}
-          value={time}
-        /> */}
         <NumberInput
           onInputChange={setTime}
           defaultValue={time}
@@ -46,15 +37,6 @@ export const PlayControls = ({
       </fieldset>
       -
       <fieldset className="flex gap-1">
-        {/* <input
-          className="bg-gray-700 px-1 rounded"
-          type="number"
-          data-testid="max-time"
-          min={100}
-          max={2000}
-          step={10}
-          defaultValue={2000}
-        /> */}
         <NumberInput
           onInputChange={onDurationChange}
           min={TIMELINE_MIN_DURATION}

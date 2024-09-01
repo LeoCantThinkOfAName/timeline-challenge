@@ -5,7 +5,6 @@ type SegmentProps = {
 };
 
 export const Segment = ({ duration }: SegmentProps) => {
-  // TODO: resize based on time
   return (
     <div
       className="py-2"

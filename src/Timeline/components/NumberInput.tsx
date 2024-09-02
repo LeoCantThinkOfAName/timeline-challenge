@@ -1,5 +1,5 @@
 import {
-  FC,
+  ChangeEvent,
   FocusEvent,
   InputHTMLAttributes,
   KeyboardEvent,
@@ -7,6 +7,7 @@ import {
   useCallback,
   useEffect,
   useRef,
+  useState,
 } from "react";
 import {
   KEYCODE_MAP,
@@ -17,104 +18,113 @@ import {
 import { getRoundedTime } from "../../utils";
 
 interface NumberInputProps extends InputHTMLAttributes<HTMLInputElement> {
+  onComplete: (val: number) => void;
   defaultValue: number;
+  min: number;
+  max: number;
+  value: number;
 }
 
-export const NumberInput: FC<NumberInputProps> = ({
+const validVal = (val: number, min: number, max: number) => {
+  let finalVal = val;
+  // if number is not mutiply of step
+  if (finalVal % TIMELINE_STEP > 0) {
+    finalVal = getRoundedTime(val);
+  }
+  // if number is larger than maximum
+  if (finalVal > max) finalVal = max;
+  // if number is smaller than minimum
+  if (finalVal < min) finalVal = min;
+  return finalVal;
+};
+
+const onFocus = (e: FocusEvent<HTMLInputElement>) => e.currentTarget.select();
+
+export const NumberInput = ({
   min,
   max,
+  value,
   defaultValue,
+  onComplete,
   ...props
-}) => {
-  const inputRef = useRef<HTMLInputElement>(null);
+}: NumberInputProps) => {
   const storedValue = useRef<number>(defaultValue);
+  const [localVal, setLocalVal] = useState<string>(defaultValue.toString());
 
-  const storeAndSet = useCallback((value: number) => {
-    // onInputChange(value);
-    storedValue.current = value;
-    if (inputRef.current) inputRef.current.value = String(value);
-  }, []);
+  const complete = useCallback(() => {
+    const val = validVal(storedValue.current, min, max);
+    setLocalVal(val.toString());
+    onComplete(val);
+  }, [onComplete, setLocalVal]);
 
-  const onKeyUp = useCallback((e: KeyboardEvent<HTMLInputElement>) => {
-    switch (e.code) {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) =>
+    setLocalVal(e.currentTarget.value);
+  const onBlur = () => complete();
+
+  const onKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
+    const { currentTarget, code } = e;
+    switch (code) {
       case KEYCODE_MAP.Enter:
         // when press ENTER, lose focus
-        e.currentTarget.blur();
+        storedValue.current = Number(currentTarget.value);
+        currentTarget.blur();
         break;
       case KEYCODE_MAP.Escape:
         // when press ESC, restore the input to the last valid value and lose focus
-        e.currentTarget.value = String(storedValue.current);
-        e.currentTarget.blur();
+        setLocalVal(storedValue.current.toString());
+        currentTarget.blur();
         break;
       case KEYCODE_MAP.ArrowUp:
       case KEYCODE_MAP.ArrowDown:
         // select the entire value when user press arrow up/arrow down
-        e.currentTarget.select();
-        storeAndSet(Number(e.currentTarget.value));
-        break;
+        storedValue.current = Number(currentTarget.value);
+        complete();
+        currentTarget.select();
     }
-  }, []);
+  };
 
-  const onBlur = useCallback(
-    (e: FocusEvent<HTMLInputElement>) => {
-      let finalVal: number;
-      // when input lose focus, set the value
-      const { value } = e.currentTarget;
-      const num = Number(value);
-      if (!value) {
-        // safe guard if no value is given
-        finalVal = storedValue.current;
-        e.currentTarget.value = String(finalVal);
-        return;
-      } else if (isNaN(num)) {
-        // if value is invalid, restore the input to the last valid value
-        e.currentTarget.value = String(storedValue);
-        return;
-      } else if (num < 0) {
-        // if number is nagative, set it as minimum allowed number
-        finalVal = Number(min);
-      } else if (num > Number(max)) {
-        finalVal = Number(max);
-      } else {
-        // rounded the value to the times of the given step config
-        finalVal = getRoundedTime(num);
-      }
-      storeAndSet(finalVal);
-    },
-    [max, min],
-  );
+  const onMouseUp = (e: MouseEvent<HTMLInputElement>) => {
+    const { currentTarget } = e;
+    currentTarget.select();
+    const val = Number(currentTarget.value);
+    storedValue.current = val;
+    complete();
+  };
 
-  const onFocus = useCallback((e: FocusEvent<HTMLInputElement>) => {
-    e.currentTarget.select();
-  }, []);
-
-  const onMouseUp = useCallback((e: MouseEvent<HTMLInputElement>) => {
-    e.currentTarget.select();
-    storeAndSet(Number(e.currentTarget.value));
-  }, []);
-
+  // assign value to localVal if user set time at ruler
   useEffect(() => {
-    // if min/max changed and the value is out of range, set the value to the upper or lower bound
-    const [maxV, minV] = [Number(max), Number(min)];
-    if (storedValue.current > maxV) {
-      storeAndSet(maxV);
-    } else if (storedValue.current < minV) {
-      storeAndSet(minV);
-    }
-  }, [max, min]);
+    setLocalVal(value.toString());
+    storedValue.current = value;
+  }, [value]);
+  // update time and playhead pos when duration change
+  useEffect(() => {
+    setLocalVal((prev) => {
+      let finalVal = prev;
+      if (Number(prev) > max) {
+        finalVal = max.toString();
+        storedValue.current = max;
+      }
+      if (Number(prev) < min) {
+        finalVal = min.toString();
+        storedValue.current = min;
+      }
+      complete();
+      return finalVal;
+    });
+  }, [min, max, setLocalVal]);
 
   return (
     <input
-      ref={inputRef}
       className="bg-gray-700 px-1 rounded"
       type="number"
-      step={TIMELINE_STEP}
-      onMouseUp={onMouseUp}
-      onKeyUp={onKeyUp}
-      onFocus={onFocus}
-      onBlur={onBlur}
       min={min}
       max={max}
+      value={localVal}
+      onChange={onChange}
+      onFocus={onFocus}
+      onBlur={onBlur}
+      onKeyUp={onKeyUp}
+      onMouseUp={onMouseUp}
       {...props}
     />
   );
@@ -124,4 +134,5 @@ NumberInput.defaultProps = {
   min: 0,
   max: TIMELINE_MAX_DURATION,
   defaultValue: 0,
+  step: TIMELINE_STEP,
 } as NumberInputProps;

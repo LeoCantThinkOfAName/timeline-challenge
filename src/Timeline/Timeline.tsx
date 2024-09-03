@@ -1,30 +1,17 @@
-import { useEffect, useRef } from "react";
-
 import { KeyframeList } from "./KeyframeList";
 import { PlayControls } from "./PlayControls";
 import { Playhead } from "./Playhead";
 import { Ruler } from "./Ruler";
 import { TrackList } from "./TrackList";
+import { useRef } from "react";
 import { useSyncScroll } from "../hooks/useSyncScroll";
-import { useTimelineStore } from "./Store";
 
 export const Timeline = () => {
-  // const [offset, setOffset] = useState(0);
-  // const [time, setTime] = useState(0);
-  // const [duration, setDuration] = useState(TIMELINE_MAX_DURATION);
-  const setOffset = useTimelineStore.use.setOffset();
   const rulerRef = useRef<HTMLDivElement>(null);
   const keyframeRef = useRef<HTMLDivElement>(null);
   const trackListRef = useRef<HTMLDivElement>(null);
   useSyncScroll([rulerRef, keyframeRef], "X");
   useSyncScroll([keyframeRef, trackListRef], "Y");
-
-  useEffect(() => {
-    rulerRef.current?.addEventListener("scroll", (e) => {
-      const currElm = e.target as HTMLDivElement;
-      setOffset(currElm.scrollLeft);
-    });
-  }, []);
 
   return (
     <div

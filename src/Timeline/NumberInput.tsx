@@ -4,7 +4,6 @@ import {
   InputHTMLAttributes,
   KeyboardEvent,
   MouseEvent,
-  useCallback,
   useEffect,
   useRef,
   useState,
@@ -13,9 +12,9 @@ import {
   KEYCODE_MAP,
   TIMELINE_MAX_DURATION,
   TIMELINE_STEP,
-} from "../../constants";
+} from "../constants";
 
-import { getRoundedTime } from "../../utils";
+import { getRoundedTime } from "../utils";
 
 interface NumberInputProps extends InputHTMLAttributes<HTMLInputElement> {
   onComplete: (val: number) => void;
@@ -51,11 +50,11 @@ export const NumberInput = ({
   const storedValue = useRef<number>(defaultValue);
   const [localVal, setLocalVal] = useState<string>(defaultValue.toString());
 
-  const complete = useCallback(() => {
+  const complete = () => {
     const val = validVal(storedValue.current, min, max);
     setLocalVal(val.toString());
     onComplete(val);
-  }, [onComplete, setLocalVal]);
+  };
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) =>
     setLocalVal(e.currentTarget.value);

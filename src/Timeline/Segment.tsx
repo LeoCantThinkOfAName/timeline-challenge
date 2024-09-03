@@ -1,5 +1,5 @@
 import { TIMELINE_MAX_DURATION } from "../constants";
-import { useTimelineStore } from "./Store";
+import { useTimelineStore } from "./Timeline.store";
 
 type SegmentProps = {};
 

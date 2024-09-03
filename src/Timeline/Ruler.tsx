@@ -1,7 +1,7 @@
-import { ChangeEvent, forwardRef, useCallback, useMemo } from "react";
+import { ChangeEvent, RefObject, forwardRef, useEffect, useMemo } from "react";
 import { TIMELINE_MAX_DURATION, TIMELINE_STEP } from "../constants";
 
-import { useTimelineStore } from "./Store";
+import { useTimelineStore } from "./Timeline.store";
 
 type RulerProps = {};
 
@@ -9,6 +9,7 @@ export const Ruler = forwardRef<HTMLDivElement, RulerProps>((_props, ref) => {
   const time = useTimelineStore.use.time();
   const duration = useTimelineStore.use.duration();
   const setTime = useTimelineStore.use.setTime();
+  const setOffset = useTimelineStore.use.setOffset();
   const sharedStyle = useMemo(
     () => ({
       style: {
@@ -18,11 +19,18 @@ export const Ruler = forwardRef<HTMLDivElement, RulerProps>((_props, ref) => {
     [duration],
   );
 
-  const onChange = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) =>
-      setTime(Number(e.currentTarget.value)),
-    [setTime],
-  );
+  const onChange = (e: ChangeEvent<HTMLInputElement>) =>
+    setTime(Number(e.currentTarget.value));
+  const scrollListener = (e: Event) =>
+    setOffset((e.target as HTMLDivElement).scrollLeft);
+
+  useEffect(() => {
+    const inputRef = ref as RefObject<HTMLDivElement | null>;
+    inputRef.current?.addEventListener("scroll", scrollListener);
+    return () => {
+      inputRef.current?.removeEventListener("scroll", scrollListener);
+    };
+  }, []);
 
   return (
     <div

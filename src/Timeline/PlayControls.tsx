@@ -1,7 +1,7 @@
 import { TIMELINE_MAX_DURATION, TIMELINE_MIN_DURATION } from "../constants";
 
-import { NumberInput } from "./components/NumberInput";
-import { useTimelineStore } from "./Store";
+import { NumberInput } from "./NumberInput";
+import { useTimelineStore } from "./Timeline.store";
 
 type PlayControlsProps = {};
 

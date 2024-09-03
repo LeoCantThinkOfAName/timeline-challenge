@@ -1,13 +1,15 @@
-import { useTimelineStore } from "./Store";
+import { useTimelineStore } from "./Timeline.store";
 
 type PlayheadProps = {};
 
 export const Playhead = (_props: PlayheadProps) => {
   const offset = useTimelineStore.use.offset();
   const time = useTimelineStore.use.time();
+  const hidden = offset > time;
+
   return (
     <div
-      hidden={offset > time}
+      hidden={hidden}
       className="absolute left-[316px] h-full border-l-2 border-solid border-yellow-600 z-10"
       data-testid="playhead"
       style={{ transform: `translateX(calc(${time - offset}px - 50%))` }}

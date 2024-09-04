@@ -2,7 +2,7 @@ import { RefObject, useCallback, useEffect } from "react";
 
 export const useSyncScroll = (
   refs: RefObject<HTMLElement>[],
-  dir: "X" | "Y" = "X",
+  dir: "X" | "Y",
 ) => {
   useEffect(() => {
     refs.forEach((ref) =>
@@ -19,7 +19,7 @@ export const useSyncScroll = (
   const scrollListener = useCallback((e: Event) => {
     const currElm = e.target as HTMLElement;
     const targetRefs = refs.filter((ref) => ref.current !== currElm);
-    if (dir === "X") {
+    if (dir === "X" || undefined) {
       targetRefs.forEach((ref) => {
         ref.current?.scroll(currElm.scrollLeft, ref.current.scrollTop);
       });

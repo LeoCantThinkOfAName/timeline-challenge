@@ -3,7 +3,7 @@ import { create } from "zustand";
 import { createSelectors } from "../utils";
 import { devtools } from "zustand/middleware";
 
-interface TimelineState {
+export interface TimelineState {
   duration: number;
   time: number;
   offset: number;

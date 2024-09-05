@@ -47,6 +47,7 @@ export const NumberInput = ({
   onComplete,
   ...props
 }: NumberInputProps) => {
+  const isEscaped = useRef<boolean>(false);
   const storedValue = useRef<number>(defaultValue);
   const [localVal, setLocalVal] = useState<string>(defaultValue.toString());
 
@@ -58,7 +59,14 @@ export const NumberInput = ({
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) =>
     setLocalVal(e.currentTarget.value);
-  const onBlur = () => complete();
+  const onBlur = (e: FocusEvent<HTMLInputElement>) => {
+    if (isEscaped.current) complete();
+    else {
+      storedValue.current = Number(e.currentTarget.value);
+      complete();
+    }
+    isEscaped.current = false;
+  };
 
   const onKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
     const { currentTarget, code } = e;
@@ -71,6 +79,7 @@ export const NumberInput = ({
       case KEYCODE_MAP.Escape:
         // when press ESC, restore the input to the last valid value and lose focus
         setLocalVal(storedValue.current.toString());
+        isEscaped.current = true;
         currentTarget.blur();
         break;
       case KEYCODE_MAP.ArrowUp:

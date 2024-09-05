@@ -34,14 +34,28 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom --coverage",
+    "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "e2e": "playwright test --ui"
+    "e2e": "playwright test --ui",
+    "test:cov": "react-scripts test --coverage --watchAll=false"
   },
   "browserslist": [
     ">0.2%",
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "jest": {
+    "collectCoverageFrom": ["src/**/*.{ts,tsx}"],
+    "coveragePathIgnorePatterns": ["src/index.tsx"],
+    "coverageReporters": ["text"],
+    "coverageThreshold": {
+      "global": {
+        "branches": 90,
+        "functions": 90,
+        "lines": 90,
+        "statements": 90
+      }
+    }
+  }
 }

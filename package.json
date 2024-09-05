@@ -17,12 +17,14 @@
     "zustand": "^4.5.5"
   },
   "devDependencies": {
+    "@playwright/test": "^1.46.1",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/react": "^16.0.1",
     "@testing-library/user-event": "^14.5.2",
     "@types/jest": "^29.5.12",
     "@types/mocha": "^10.0.7",
+    "@types/node": "^22.5.3",
     "@types/react": "18.2.38",
     "@types/react-dom": "18.2.15",
     "source-map-support": "^0.5.21",
@@ -33,7 +35,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom --coverage",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "e2e": "playwright test --ui"
   },
   "browserslist": [
     ">0.2%",

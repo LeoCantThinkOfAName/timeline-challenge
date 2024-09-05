@@ -121,9 +121,9 @@ test.describe.serial("Timeline (Play Controls Behavior)", () => {
   });
 
   test("Current Time and Duration are always multiples of 10ms", async () => {
-    await timeLocator.fill("101");
+    await timeLocator.fill("55");
     await timeLocator.press("Enter");
-    await expect(timeLocator).toHaveValue("100");
+    await expect(timeLocator).toHaveValue("60");
   });
 
   test("Current Time and Duration are always positive integers", async () => {
